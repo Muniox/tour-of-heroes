@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
 import { MessageService } from '../message.service';
@@ -8,32 +8,23 @@ import { MessageService } from '../message.service';
   templateUrl: './heroes.component.html',
   styleUrl: './heroes.component.scss',
 })
-export class HeroesComponent implements OnInit, OnDestroy {
+export class HeroesComponent implements OnInit {
   heroes: Hero[] = [];
   selectedHero?: Hero;
 
   // While you could call getHeroes() in the constructor, that's not the best practice.
-  constructor(
-    private heroService: HeroService,
-    private messageService: MessageService
-  ) {}
+  constructor(private heroService: HeroService) {}
 
   ngOnInit(): void {
-    this.getHeroes()
+    this.getHeroes();
   }
 
-  ngOnDestroy(): void {
-    // TODO: make unsubscribe
-    throw new Error('Method not implemented.');
-  }
-
-  onSelect(hero: Hero) {
-    this.selectedHero = hero;
-    this.messageService.add(`HeroesComponent: Selected hero id=${hero.id}`);
-  }
+  // ngOnDestroy(): void {
+  //   // TODO: make unsubscribe
+  //   throw new Error('Method not implemented.');
+  // }
 
   getHeroes(): void {
-    this.heroService.getHeroes()
-      .subscribe(heroes => this.heroes = heroes);
+    this.heroService.getHeroes().subscribe(heroes => (this.heroes = heroes));
   }
 }
