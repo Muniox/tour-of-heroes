@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-heroes',
@@ -12,10 +13,13 @@ export class HeroesComponent implements OnInit, OnDestroy {
   selectedHero?: Hero;
 
   // While you could call getHeroes() in the constructor, that's not the best practice.
-  constructor(private heroService: HeroService) {}
+  constructor(
+    private heroService: HeroService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
-    this.heroService.getHeroes().subscribe(heroes => (this.heroes = heroes));
+    this.getHeroes()
   }
 
   ngOnDestroy(): void {
@@ -25,5 +29,11 @@ export class HeroesComponent implements OnInit, OnDestroy {
 
   onSelect(hero: Hero) {
     this.selectedHero = hero;
+    this.messageService.add(`HeroesComponent: Selected hero id=${hero.id}`);
+  }
+
+  getHeroes(): void {
+    this.heroService.getHeroes()
+      .subscribe(heroes => this.heroes = heroes);
   }
 }
